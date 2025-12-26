@@ -11,7 +11,7 @@ import { Banner } from '@/types/admin';
 import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 export default function Banners() {
   const [banners, setBanners] = useState<Banner[]>([]);

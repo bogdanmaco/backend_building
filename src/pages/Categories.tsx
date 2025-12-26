@@ -11,7 +11,7 @@ import { Plus, Pencil, Trash2, ChevronDown, ChevronRight, Building2, Paintbrush,
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Iconiți disponibile pentru categorii
 const AVAILABLE_ICONS = [

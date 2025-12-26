@@ -7,7 +7,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recha
 import { Badge } from '@/components/ui/badge';
 import { DashboardStats, OrderStatus } from '@/types/admin';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const statusColors: Record<string, string> = {
   new: 'bg-blue-500 text-white',

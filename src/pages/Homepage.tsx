@@ -12,7 +12,7 @@ import { Pencil, GripVertical, Sparkles, Tag, TrendingUp, FolderHeart, Loader2, 
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 type SectionType = 'new_products' | 'discounts' | 'popular' | 'popular_categories';
 
