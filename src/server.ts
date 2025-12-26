@@ -37,8 +37,9 @@ const ensureAdminUser = async () => {
     const normalizedEmail = adminEmail;
     const existing = await User.findOne({ email: { $regex: new RegExp(`^${normalizedEmail}$`, 'i') } });
     
+    const hashed = await bcrypt.hash(adminPassword, 10);
+
     if (!existing) {
-      const hashed = await bcrypt.hash(adminPassword, 10);
       await User.create({
         name: adminName,
         email: normalizedEmail,
@@ -48,7 +49,13 @@ const ensureAdminUser = async () => {
       });
       console.log('👤 Admin creat automat');
     } else {
-      console.log('✅ Admin deja există');
+      const passwordMatches = await bcrypt.compare(adminPassword, existing.password);
+      if (!passwordMatches) {
+        await User.updateOne({ _id: existing._id }, { $set: { password: hashed, isActive: true } });
+        console.log('🔑 Parola admin a fost resetată conform .env');
+      } else {
+        console.log('✅ Admin deja există');
+      }
     }
   } catch (error: any) {
     if (error.code === 11000) {
