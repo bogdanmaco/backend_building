@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Import routes
 import productRoutes from './routes/products.ts';
@@ -22,6 +24,9 @@ import User from './models/User.ts';
 dotenv.config();
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const adminDistPath = path.resolve(__dirname, '../dist');
 
 const ensureAdminUser = async () => {
   try {
@@ -102,6 +107,12 @@ app.use('/api/banners', authMiddleware, adminMiddleware, bannerRoutes);
 app.use('/api/homepage', authMiddleware, adminMiddleware, homepageRoutes);
 app.use('/api/dashboard', authMiddleware, adminMiddleware, dashboardRoutes);
 app.use('/api/users', authMiddleware, adminMiddleware, userRoutes);
+
+// Servește aplicația admin (build Vite) din dist/ (non-API routes)
+app.use(express.static(adminDistPath));
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile(path.join(adminDistPath, 'index.html'));
+});
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
